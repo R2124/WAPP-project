@@ -1,0 +1,22 @@
+name: Auto Deploy to aaPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run deploy script
+        env:
+          AAPANEL_HOST: ${{ secrets.AAPANEL_HOST }}
+          AAPANEL_USER: ${{ secrets.AAPANEL_USER }}
+          AAPANEL_KEY: ${{ secrets.AAPANEL_KEY }}
+        run: |
+          chmod +x scripts/aaPanel-auto-deploy.sh
+          bash scripts/aaPanel-auto-deploy.sh --execute --force
